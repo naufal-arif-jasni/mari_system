@@ -1,0 +1,319 @@
+/* admindashboard-styles.css - Styles for admin_dashboard.php */
+
+:root {
+    --primary-maroon: #800000;
+    --hover-maroon: #a00000;
+    --light-bg: #f4f4f4;
+    --text-dark: #333;
+    --white: #ffffff;
+    --sidebar-width: 250px;
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+body { 
+    display: flex; 
+    min-height: 100vh; 
+    background-color: var(--light-bg); 
+    overflow-x: hidden; 
+    flex-direction: column; 
+}
+
+/* --- Navbar --- */
+.navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background-color: var(--primary-maroon);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1001;
+    color: var(--white);
+}
+
+.nav-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+}
+
+.logo img { 
+    height: 50px; 
+    display: block; 
+}
+
+.toggle-btn { 
+    background: none; 
+    border: none; 
+    font-size: 1.5rem; 
+    cursor: pointer; 
+    color: var(--white); 
+}
+
+.nav-right span { 
+    font-weight: bold; 
+    color: #ffcccc; 
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    position: fixed;
+    top: 60px; left: 0; bottom: 0;
+    width: var(--sidebar-width);
+    background-color: var(--primary-maroon);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.hidden { 
+    transform: translateX(-100%); 
+}
+
+.sidebar-menu { 
+    list-style: none; 
+    padding: 20px 0; 
+}
+
+.sidebar-menu li a { 
+    display: block; 
+    padding: 15px 25px; 
+    color: var(--white); 
+    text-decoration: none; 
+    transition: 0.2s; 
+}
+
+.sidebar-menu li a:hover { 
+    background-color: var(--hover-maroon); 
+    padding-left: 35px; 
+}
+
+/* --- Main Content --- */
+.main-content { 
+    flex-grow: 1; 
+    margin-top: 60px; 
+    margin-left: var(--sidebar-width); 
+    padding: 40px; 
+    transition: margin-left 0.3s ease; 
+}
+
+.main-content.expanded { 
+    margin-left: 0; 
+}
+
+/* Stats Cards */
+.stats-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 20px; 
+    margin-bottom: 30px; 
+}
+
+.stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12); 
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.stat-icon.total { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+}
+
+.stat-icon.approved { 
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); 
+}
+
+.stat-icon.pending { 
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+}
+
+.stat-icon.rejected { 
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); 
+}
+
+.stat-info { 
+    flex: 1; 
+}
+
+.stat-label { 
+    color: #666; 
+    font-size: 0.9rem; 
+    margin-bottom: 5px; 
+}
+
+.stat-value { 
+    font-size: 2rem; 
+    font-weight: bold; 
+    color: var(--text-dark); 
+}
+
+/* Dashboard Sections */
+.dashboard-section {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.section-title { 
+    font-size: 1.3rem; 
+    color: var(--primary-maroon); 
+    font-weight: bold; 
+}
+
+.view-all-link { 
+    color: var(--primary-maroon); 
+    text-decoration: none; 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+}
+
+.view-all-link:hover { 
+    text-decoration: underline; 
+}
+
+/* Recent Applications Table */
+.recent-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+}
+
+.recent-table th { 
+    text-align: left; 
+    padding: 12px; 
+    background: #f8f9fa; 
+    color: #666; 
+    font-size: 0.9rem; 
+    border-bottom: 2px solid #e0e0e0; 
+}
+
+.recent-table td { 
+    padding: 12px; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+.recent-table tr:hover { 
+    background: #fafafa; 
+}
+
+.status-badge { 
+    padding: 5px 12px; 
+    border-radius: 20px; 
+    font-size: 0.85rem; 
+    font-weight: bold; 
+    display: inline-block; 
+}
+
+.status-pending { 
+    background: #fff3cd; 
+    color: #856404; 
+}
+
+.status-approved { 
+    background: #d4edda; 
+    color: #155724; 
+}
+
+.status-rejected { 
+    background: #f8d7da; 
+    color: #721c24; 
+}
+
+/* Category Stats */
+.category-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 15px; 
+}
+
+.category-item {
+    background: linear-gradient(135deg, var(--primary-maroon), #a00000);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.category-name { 
+    font-size: 0.9rem; 
+    margin-bottom: 8px; 
+    opacity: 0.9; 
+}
+
+.category-count { 
+    font-size: 2rem; 
+    font-weight: bold; 
+}
+
+/* Quick Actions */
+.quick-actions { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 15px; 
+}
+
+.action-btn {
+    background: white;
+    border: 2px solid var(--primary-maroon);
+    color: var(--primary-maroon);
+    padding: 15px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    transition: 0.2s;
+    display: block;
+}
+
+.action-btn:hover {
+    background: var(--primary-maroon);
+    color: white;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .stats-grid { 
+        grid-template-columns: 1fr; 
+    }
+    .category-grid { 
+        grid-template-columns: 1fr; 
+    }
+}

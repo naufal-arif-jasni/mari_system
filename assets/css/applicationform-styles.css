@@ -1,0 +1,58 @@
+/* ============================================
+   3. applicationform-styles.css
+   ============================================ */
+
+/* applicationform-styles.css - Styles for application_form.php */
+:root {
+    --primary-maroon: #800000;
+    --hover-maroon: #a00000;
+    --light-bg: #f4f4f4;
+    --text-dark: #333;
+    --white: #ffffff;
+    --sidebar-width: 250px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+body { display: flex; min-height: 100vh; background-color: var(--light-bg); }
+
+.imperial-script-regular {
+  font-family: "Imperial Script", cursive;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 1.2rem;
+}
+
+.navbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 60px;
+    background-color: var(--primary-maroon);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1001; color: var(--white);
+}
+.nav-left { display: flex; align-items: center; gap: 15px; }
+.logo img { height: 50px; display: block; }
+.toggle-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--white); }
+.nav-right span { font-weight: bold; color: #ffcccc; }
+
+.sidebar {
+    position: fixed; top: 60px; left: 0; bottom: 0;
+    width: var(--sidebar-width); background-color: var(--primary-maroon);
+    transition: transform 0.3s ease; z-index: 1000;
+}
+.sidebar.hidden { transform: translateX(-100%); }
+.sidebar-menu { list-style: none; padding: 20px 0; }
+.sidebar-menu li a { display: block; padding: 15px 25px; color: var(--white); text-decoration: none; transition: 0.2s; }
+.sidebar-menu li a:hover { background-color: var(--hover-maroon); padding-left: 35px; }
+
+.main-content { flex-grow: 1; margin-top: 60px; margin-left: var(--sidebar-width); padding: 40px; transition: 0.3s; }
+.main-content.expanded { margin-left: 0; }
+
+.section-header { color: white; padding: 10px 15px; border-radius: 5px 5px 0 0; font-weight: bold; }
+.hidden { display: none; }
+.required-asterisk { color: red; }
+
+.bg-primary { background-color: var(--primary-maroon) !important; }
+.text-primary { color: var(--primary-maroon) !important; }
+.btn-primary { background-color: var(--primary-maroon) !important; border-color: var(--primary-maroon) !important; }
+.btn-primary:hover { background-color: var(--hover-maroon) !important; border-color: var(--hover-maroon) !important; }
+

@@ -1,0 +1,12 @@
+/* ============================================
+   10. login-styles.css
+   ============================================ */
+
+/* login-styles.css - Styles for login.php */
+
+:root { --bs-primary: #800000; }
+
+.text-primary { color: #800000 !important; }
+.btn-primary { background-color: #800000 !important; border-color: #800000 !important; }
+.btn-primary:hover { background-color: #600000 !important; border-color: #600000 !important; }
+body { background-color: #f8f9fa; }

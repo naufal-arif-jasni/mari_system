@@ -1,0 +1,17 @@
+/* ============================================
+   13. register-styles.css
+   ============================================ */
+
+/* register-styles.css - Styles for register.php */
+
+:root { --bs-primary: #800000; --bs-primary-rgb: 128, 0, 0; }
+
+.bg-primary { background-color: #800000 !important; }
+.text-primary { color: #800000 !important; }
+.btn-primary { background-color: #800000 !important; border-color: #800000 !important; }
+.btn-primary:hover { background-color: #600000 !important; border-color: #600000 !important; }
+.btn-outline-primary { color: #800000 !important; border-color: #800000 !important; }
+.btn-outline-primary:hover { background-color: #800000 !important; color: white !important; }
+.navbar-brand { color: #800000 !important; }
+.page-link { color: #800000 !important; }
+.page-item.active .page-link { background-color: #800000 !important; border-color: #800000 !important; }

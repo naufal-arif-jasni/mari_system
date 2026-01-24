@@ -1,0 +1,29 @@
+/* ============================================
+   7. footer-styles.css
+   ============================================ */
+
+/* footer-styles.css - Styles for footer.php */
+
+footer {
+    background-color: #f4f4f4;
+    width: 100%;
+    margin-top: 50px;
+    padding-top: 3rem;
+    padding-bottom: 2.5rem;
+}
+
+footer hr {
+    border-color: rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+footer .text-center {
+    text-align: center;
+    color: #6c757d;
+}
+
+footer small {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
