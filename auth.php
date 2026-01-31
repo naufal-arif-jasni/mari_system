@@ -24,6 +24,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         if (mysqli_num_rows($result) === 1) {
             $row = mysqli_fetch_assoc($result);
             if (password_verify($password, $row['password_hash'])) {
+                // Update last login timestamp
+                $update_login = "UPDATE admins SET last_login_at = NOW() WHERE admin_id = " . $row['admin_id'];
+                mysqli_query($conn, $update_login);
+                
                 $_SESSION['user_id'] = $row['admin_id'];
                 $_SESSION['username'] = $row['admin_username'];
                 $_SESSION['role'] = 'admin';

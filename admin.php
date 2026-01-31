@@ -92,18 +92,19 @@ if (isset($_POST['update_btn'])) {
         $stmt->close();
         
         // Insert into status table for history tracking
-        $history_stmt = $conn->prepare("INSERT INTO status (application_id, old_status, new_status, changed_by, remarks) 
-                                        VALUES (?, ?, ?, ?, ?)");
-        $history_stmt->bind_param("issss", $id, $old_status, $new_status, $admin_user, $remarks);
+        $admin_id = $_SESSION['user_id'] ?? null;
+        $history_stmt = $conn->prepare("INSERT INTO status (application_id, admin_id, old_status, new_status, changed_by, remarks) 
+                                        VALUES (?, ?, ?, ?, ?, ?)");
+        $history_stmt->bind_param("iissss", $id, $admin_id, $old_status, $new_status, $admin_user, $remarks);
         $history_stmt->execute();
         $history_stmt->close();
         
         // Log activity
         $ip = $_SERVER['REMOTE_ADDR'];
-        $log_stmt = $conn->prepare("INSERT INTO activity_log (application_id, activity_type, description, ip_address) 
-                                     VALUES (?, 'Update', ?, ?)");
+        $log_stmt = $conn->prepare("INSERT INTO activity_log (admin_id, application_id, activity_type, description, ip_address) 
+                                     VALUES (?, ?, 'Update', ?, ?)");
         $log_desc = "Status changed from $old_status to $new_status by $admin_user";
-        $log_stmt->bind_param("iss", $id, $log_desc, $ip);
+        $log_stmt->bind_param("iiss", $admin_id, $id, $log_desc, $ip);
         $log_stmt->execute();
         $log_stmt->close();
         

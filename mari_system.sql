@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 31, 2026 at 07:27 AM
+-- Generation Time: Jan 31, 2026 at 06:57 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -47,7 +47,14 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `admin_id`, `application_id`, `
 (2, NULL, NULL, 8, 'Update', 'Status changed from Pending to Approved by MasterAdmin', '::1', '2026-01-31 04:27:27'),
 (3, 1, NULL, 9, 'Create', 'New application submitted', '::1', '2026-01-31 05:25:23'),
 (4, NULL, NULL, 9, 'Update', 'Status changed from Pending to Under Review by MasterAdmin', '::1', '2026-01-31 07:02:59'),
-(5, NULL, NULL, 9, 'Update', 'Status changed from Under Review to Rejected by MasterAdmin', '::1', '2026-01-31 07:03:06');
+(5, NULL, NULL, 9, 'Update', 'Status changed from Under Review to Rejected by MasterAdmin', '::1', '2026-01-31 07:03:06'),
+(6, 2, NULL, 10, 'Create', 'New application submitted', '::1', '2026-01-31 18:12:03'),
+(7, NULL, NULL, 10, 'Update', 'Status changed from Pending to Approved by nopal', '::1', '2026-01-31 18:13:27'),
+(8, 3, NULL, 11, 'Create', 'New application submitted', '::1', '2026-01-31 18:41:17'),
+(9, 4, NULL, 12, 'Create', 'New application submitted', '::1', '2026-01-31 18:48:06'),
+(10, 5, NULL, 13, 'Create', 'New application submitted', '::1', '2026-01-31 18:52:02'),
+(11, NULL, NULL, 11, 'Update', 'Status changed from Pending to Approved by MasterAdmin', '::1', '2026-01-31 18:54:19'),
+(12, NULL, NULL, 12, 'Update', 'Status changed from Pending to Under Review by MasterAdmin', '::1', '2026-01-31 18:54:48');
 
 -- --------------------------------------------------------
 
@@ -72,7 +79,11 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`admin_id`, `admin_username`, `password_hash`, `full_name`, `email`, `is_active`, `last_login_at`, `created_at`, `updated_at`) VALUES
-(4, 'nopal', '$2y$10$cn3tftW2cHzH4CyUX8Q1NO7Yx/WslT9S4.pabTGqpPCeGP3k40NPy', 'nopal', 'nopal@gmail.com', 1, NULL, '2026-01-31 07:18:34', '2026-01-31 07:18:34');
+(4, 'nopal', '$2y$10$cn3tftW2cHzH4CyUX8Q1NO7Yx/WslT9S4.pabTGqpPCeGP3k40NPy', 'nopal', 'nopal@gmail.com', 1, NULL, '2026-01-31 07:18:34', '2026-01-31 07:18:34'),
+(5, 'aina', '$2y$10$2u2SSFA1rOGI19yptODFO.Y0tY0NTRwNKPkbyskUf6UJFQb49VQga', 'aina', 'aina@gmail.com', 1, NULL, '2026-01-31 18:52:43', '2026-01-31 18:52:43'),
+(6, 'ayu', '$2y$10$1KE/veUXt3ew9f01L/jIg.4fqVkY4fvLG5gvxU9OF4SuTYJSqnLZa', 'ayuni', 'ayuni@gmail.com', 1, NULL, '2026-01-31 18:53:00', '2026-01-31 18:53:00'),
+(7, 'fatin', '$2y$10$VLntw5ewFa7fLd61TABfFOvdsXSoyVTu729k.WUwmUAef2p4vLRd2', 'fatin', 'fatin@gmail.com', 1, NULL, '2026-01-31 18:53:19', '2026-01-31 18:53:19'),
+(8, 'alif', '$2y$10$CAEy3eK8lJZWL9TuZAVoOu/HK9cR8GJZ8HBunzykAqr1JsNL2POqu', 'alif aiman', 'alifaiman@gmail.com', 1, NULL, '2026-01-31 18:53:52', '2026-01-31 18:53:52');
 
 -- --------------------------------------------------------
 
@@ -141,7 +152,11 @@ CREATE TABLE `applicant_details` (
 
 INSERT INTO `applicant_details` (`applicant_id`, `application_id`, `full_name`, `mykad`, `date_of_birth`, `age`, `gender`, `nationality`, `oku_card_number`, `phone_number`, `email_address`, `residential_address`, `state`, `zip_code`, `marital_status`, `education_level`, `guardian_required`, `guardian_full_name`, `guardian_ic_number`, `guardian_relationship`, `guardian_phone_number`, `guardian_email`, `legal_authority_declaration`, `primary_category`, `sub_category`, `diagnosis_date`, `severity_level`, `diagnosed_by`, `hospital_clinic`, `disability_additional_notes`, `mobility_mode`, `assistive_devices`, `adl_independence`, `communication_method`, `employment_status`, `monthly_income`, `special_requirements`, `document_medical_report_path`, `document_specialist_form_path`, `document_oku_card_path`, `document_ic_copy_path`, `document_photo_path`, `document_other_path`, `accuracy_confirmed`, `consent_given`, `digital_signature`, `signature_date`, `signature_ip_address`, `user_agent`, `terms_accepted`, `created_at`, `updated_at`) VALUES
 (1, 8, 'naufal', '041122070295', '2004-11-22', 21, '', 'Malaysian', 'OKU123456789', '0109094907', 'naufal@gmail.com', 'TELUK KUMBAR', 'Pulau Pinang', '11920', 'Single', 'Degree', 0, '', '', '', '', '', 0, 'Physical', '', '2025-01-01', 'Moderate', '', '', '', 'Unassisted', 'Oxygen Tank', '', 'Verbal', 'Student', '0.00', '', 'uploads/documents/1769833551_med_786.jpg', 'uploads/documents/1769833551_spec_660.pdf', NULL, NULL, NULL, NULL, 1, 1, 'Naufal', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-01-31 04:25:51', '2026-01-31 04:25:51'),
-(2, 9, 'naufal', '041122070295', '2004-11-22', 21, '', 'Malaysian', 'OKU123456789', '0109094907', 'naufal@gmail.com', 'TELUK KUMBAR', 'Pulau Pinang', '11920', 'Single', 'Degree', 0, '', '', '', '', '', 0, 'Physical', '', '2025-01-01', 'Moderate', '', '', '', 'Unassisted', '', '', 'Verbal', 'Student', '0.00', '', 'uploads/documents/1769837123_med_943.jpg', 'uploads/documents/1769837123_spec_538.pdf', NULL, NULL, NULL, NULL, 1, 1, 'Naufal', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-01-31 05:25:23', '2026-01-31 05:25:23');
+(2, 9, 'naufal', '041122070295', '2004-11-22', 21, '', 'Malaysian', 'OKU123456789', '0109094907', 'naufal@gmail.com', 'TELUK KUMBAR', 'Pulau Pinang', '11920', 'Single', 'Degree', 0, '', '', '', '', '', 0, 'Physical', '', '2025-01-01', 'Moderate', '', '', '', 'Unassisted', '', '', 'Verbal', 'Student', '0.00', '', 'uploads/documents/1769837123_med_943.jpg', 'uploads/documents/1769837123_spec_538.pdf', NULL, NULL, NULL, NULL, 1, 1, 'Naufal', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-01-31 05:25:23', '2026-01-31 05:25:23'),
+(3, 10, 'aina', '041023020452', '2004-10-23', 21, '', 'Malaysian', 'OKU987654321', '01111507521', 'ainaadrianaidris@gmail.com', 'ALOR SETAR', 'Kedah', '05460', 'Single', 'Degree', 0, '', '', '', '', '', 0, 'Physical', '', '2026-01-01', 'Moderate', '', '', '', 'Unassisted', 'Prosthetic', '', 'Verbal', 'Student', '0.00', '', 'uploads/documents/1769883123_med_174.jpg', 'uploads/documents/1769883123_spec_436.pdf', NULL, NULL, NULL, NULL, 1, 1, 'Aina', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-01-31 18:12:03', '2026-01-31 18:12:03'),
+(4, 11, 'UWAIS TAUFIQILLAH BIN MOHD HASRUL SYUHAIDI', '050330070403', '2005-03-30', 20, '', 'Malaysian', 'OKU5657', '0199439272', 'uwaisamira143@gmail.com', 'TELUK KUMBAQ', 'Pulau Pinang', '11920', 'Single', 'Degree', 0, '', '', '', '', '', 0, 'Mental', '', '2024-07-20', 'Mild', '', '', '', 'Unassisted', 'None', '', 'Verbal', 'Employed Part-Time', '0.00', '', 'uploads/documents/1769884877_med_409.jpg', 'uploads/documents/1769884877_spec_896.pdf', NULL, NULL, NULL, NULL, 1, 1, 'Uwais', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-01-31 18:41:17', '2026-01-31 18:41:17'),
+(5, 12, 'fatin', '041125070298', '2004-11-25', 21, '', 'Malaysian', 'OKU041154', '0123456789', 'fatinnabila@gmail.com', 'permatang pauh', 'Pulau Pinang', '35000', 'Single', 'None', 0, '', '', '', '', '', 0, 'Hearing', '', '2025-12-05', 'Moderate', '', '', '', 'Unassisted', '', '', 'Verbal', 'Student', '0.00', '', 'uploads/documents/1769885286_med_546.jpg', 'uploads/documents/1769885286_spec_626.pdf', NULL, NULL, NULL, NULL, 1, 1, 'Fatin', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-01-31 18:48:06', '2026-01-31 18:48:06'),
+(6, 13, 'muhammad ammar afif bin jasni', '080107070037', '2004-01-07', 22, '', 'Malaysian', 'OKU456789123', '01136155006', 'ammarafif@gmail.com', 'bayan lepaih', 'Pulau Pinang', '11920', 'Single', 'None', 0, '', '', '', '', '', 0, 'Visual', '', '2026-01-01', 'Severe', '', '', '', 'Unassisted', '', '', 'Verbal', 'Unemployed', '0.00', '', 'uploads/documents/1769885522_med_372.jpg', 'uploads/documents/1769885522_spec_529.pdf', NULL, NULL, NULL, NULL, 1, 1, 'Ammar', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 1, '2026-01-31 18:52:02', '2026-01-31 18:52:02');
 
 --
 -- Triggers `applicant_details`
@@ -249,7 +264,11 @@ CREATE TABLE `application_history` (
 
 INSERT INTO `application_history` (`application_id`, `user_id`, `application_number`, `status`, `submission_date`, `last_updated`, `reviewed_by`, `reviewed_at`, `admin_remarks`) VALUES
 (8, 1, 'MARI-2026-000001', 'Approved', '2026-01-31 04:25:51', '2026-01-31 04:27:27', 'MasterAdmin', '2026-01-31 04:27:27', ''),
-(9, 1, 'MARI-2026-000002', 'Rejected', '2026-01-31 05:25:23', '2026-01-31 07:03:06', 'MasterAdmin', '2026-01-31 07:03:06', '');
+(9, 1, 'MARI-2026-000002', 'Rejected', '2026-01-31 05:25:23', '2026-01-31 07:03:06', 'MasterAdmin', '2026-01-31 07:03:06', ''),
+(10, 2, 'MARI-2026-000003', 'Approved', '2026-01-31 18:12:03', '2026-01-31 18:13:27', 'nopal', '2026-01-31 18:13:27', 'terima kasih'),
+(11, 3, 'MARI-2026-000004', 'Approved', '2026-01-31 18:41:17', '2026-01-31 18:54:19', 'MasterAdmin', '2026-01-31 18:54:19', 'cacat teruk\\r\\n'),
+(12, 4, 'MARI-2026-000005', 'Under Review', '2026-01-31 18:48:06', '2026-01-31 18:54:47', 'MasterAdmin', '2026-01-31 18:54:47', 'hmmm'),
+(13, 5, 'MARI-2026-000006', 'Pending', '2026-01-31 18:52:02', '2026-01-31 18:52:02', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -276,7 +295,10 @@ CREATE TABLE `status` (
 INSERT INTO `status` (`history_id`, `application_id`, `admin_id`, `old_status`, `new_status`, `changed_by`, `remarks`, `changed_at`, `ip_address`) VALUES
 (1, 8, NULL, 'Pending', 'Approved', 'MasterAdmin', '', '2026-01-31 04:27:27', NULL),
 (2, 9, NULL, 'Pending', 'Under Review', 'MasterAdmin', '', '2026-01-31 07:02:59', NULL),
-(3, 9, NULL, 'Under Review', 'Rejected', 'MasterAdmin', '', '2026-01-31 07:03:06', NULL);
+(3, 9, NULL, 'Under Review', 'Rejected', 'MasterAdmin', '', '2026-01-31 07:03:06', NULL),
+(4, 10, NULL, 'Pending', 'Approved', 'nopal', 'terima kasih', '2026-01-31 18:13:27', NULL),
+(5, 11, NULL, 'Pending', 'Approved', 'MasterAdmin', 'cacat teruk\\r\\n', '2026-01-31 18:54:19', NULL),
+(6, 12, NULL, 'Pending', 'Under Review', 'MasterAdmin', 'hmmm', '2026-01-31 18:54:48', NULL);
 
 -- --------------------------------------------------------
 
@@ -306,7 +328,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `full_name`, `ic_number`, `email`, `phone_number`, `address`, `state`, `zip_code`, `username`, `password`, `profile_picture`, `oku_number`, `created_at`, `updated_at`) VALUES
-(1, 'naufal', '041122070295', 'naufal@gmail.com', '0109094907', 'TELUK KUMBAR', 'Pulau Pinang', '11920', 'naufal', '$2y$10$tooq0k3WkXkIuDWxx0iAb.RXWJgxHmDCDAN2XTETEj7oV.G87NEte', 'uploads/profiles/1769833574_SAMPLE_IMAGE.jpg', 'OKU123456789', '2026-01-31 04:11:15', '2026-01-31 04:26:14');
+(1, 'naufal', '041122070295', 'naufal@gmail.com', '0109094907', 'TELUK KUMBAR', 'Pulau Pinang', '11920', 'naufal', '$2y$10$tooq0k3WkXkIuDWxx0iAb.RXWJgxHmDCDAN2XTETEj7oV.G87NEte', 'uploads/profiles/1769833574_SAMPLE_IMAGE.jpg', 'OKU123456789', '2026-01-31 04:11:15', '2026-01-31 04:26:14'),
+(2, 'aina', '041023020452', 'ainaadrianaidris@gmail.com', '01111507521', NULL, NULL, NULL, 'aina', '$2y$10$gZUsEu43KkDhXhw.BTMBGel37/21s2qK0VrHEFiY9GtoSgNB3Cgau', NULL, NULL, '2026-01-31 18:09:27', '2026-01-31 18:09:27'),
+(3, 'UWAIS TAUFIQILLAH BIN MOHD HASRUL SYUHAIDI', '050330070403', 'uwaisamira143@gmail.com', '0199439272', 'TELUK KUMBAQ', 'Pulau Pinang', '11920', 'uwaistaufiq', '$2y$10$d9tMjrDlY0aHV05sc0SKpu1bDQIBjYZPCv4W3scVD05eICOPhMAVm', NULL, 'OKU5657', '2026-01-31 18:36:09', '2026-01-31 18:37:28'),
+(4, 'fatin', '041125070298', 'fatinnabila@gmail.com', '0123456789', NULL, NULL, NULL, 'fatin', '$2y$10$1WSJeTpa2Xe/MiJi097ER.teuhHE1XqSDa9p6Flqe8PiaZKedwv32', NULL, NULL, '2026-01-31 18:42:46', '2026-01-31 18:42:46'),
+(5, 'muhammad ammar afif bin jasni', '080107070037', 'ammarafif@gmail.com', '01136155006', 'bayan lepaih', 'Pulau Pinang', '11920', 'ammar', '$2y$10$AhoV/c7MYbr6a.SezX6QJeY0zi/2JKdToi/nsVIWCLGzOvlFgxAxG', NULL, 'OKU456789123', '2026-01-31 18:50:16', '2026-01-31 18:50:50');
 
 -- --------------------------------------------------------
 
@@ -385,37 +411,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `log_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `admin_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `applicant_details`
 --
 ALTER TABLE `applicant_details`
-  MODIFY `applicant_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `applicant_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `application_history`
 --
 ALTER TABLE `application_history`
-  MODIFY `application_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `application_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `status`
 --
 ALTER TABLE `status`
-  MODIFY `history_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `history_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -425,7 +451,7 @@ ALTER TABLE `users`
 -- Constraints for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  ADD CONSTRAINT `fk_activity_log_admin` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_activity_log_admin` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`admin_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_activity_log_application` FOREIGN KEY (`application_id`) REFERENCES `application_history` (`application_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_activity_log_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -445,7 +471,7 @@ ALTER TABLE `application_history`
 -- Constraints for table `status`
 --
 ALTER TABLE `status`
-  ADD CONSTRAINT `fk_status_admin` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_status_admin` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`admin_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_status_application_history` FOREIGN KEY (`application_id`) REFERENCES `application_history` (`application_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
