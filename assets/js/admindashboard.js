@@ -9,7 +9,6 @@
  */
 function initializeDashboard() {
     console.log('Admin dashboard initialized');
-    // Add any dashboard-specific initialization here if needed
 }
 
 // Initialize when DOM is ready

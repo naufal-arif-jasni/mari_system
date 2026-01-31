@@ -21,18 +21,16 @@ if (mysqli_num_rows($result) > 0) {
 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : "Guest";
 
-// Fetch application history for this user
-// NEW query
+// Fetch application history
 $app_sql = "SELECT 
-                a.application_id,
-                a.application_number,
-                a.status,
-                a.submission_date,
-                dd.primary_category
-            FROM applications a
-            LEFT JOIN disability_details dd ON a.application_id = dd.application_id
-            WHERE a.user_id = '$user_id' 
-            ORDER BY a.submission_date DESC";
+                application_id,
+                application_number,
+                application_status,
+                submission_date,
+                primary_category
+            FROM applications
+            WHERE user_id = '$user_id' 
+            ORDER BY submission_date DESC";
 $app_result = mysqli_query($conn, $app_sql);
 
 $application_history = [];
@@ -41,7 +39,7 @@ while ($row = mysqli_fetch_assoc($app_result)) {
         'id' => $row['application_id'],
         'type' => $row['primary_category'] . ' Assistance',
         'date' => date('Y-m-d', strtotime($row['submission_date'])),
-        'status' => $row['status']
+        'status' => $row['application_status']
     ];
 }
 ?>

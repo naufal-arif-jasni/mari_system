@@ -25,32 +25,30 @@ if ($conn->connect_error) {
 // --- 3. STATS CALCULATION ---
 $stats = $conn->query("SELECT 
     COUNT(*) as total,
-    SUM(CASE WHEN status='Approved' THEN 1 ELSE 0 END) as approved,
-    SUM(CASE WHEN status='Pending' THEN 1 ELSE 0 END) as pending,
-    SUM(CASE WHEN status='Rejected' THEN 1 ELSE 0 END) as rejected
+    SUM(CASE WHEN application_status='Approved' THEN 1 ELSE 0 END) as approved,
+    SUM(CASE WHEN application_status='Pending' THEN 1 ELSE 0 END) as pending,
+    SUM(CASE WHEN application_status='Rejected' THEN 1 ELSE 0 END) as rejected
     FROM applications")->fetch_assoc();
 
 // Get recent applications
-// NEW query with JOINs
 $recent_apps = $conn->query("SELECT 
-    a.application_id,
-    a.application_number,
-    a.status,
-    a.submission_date,
-    ad.full_name,
-    dd.primary_category
-    FROM applications a
-    LEFT JOIN applicant_details ad ON a.application_id = ad.application_id
-    LEFT JOIN disability_details dd ON a.application_id = dd.application_id
-    ORDER BY a.submission_date DESC 
+    application_id,
+    application_number,
+    application_status,
+    submission_date,
+    full_name,
+    primary_category
+    FROM applications
+    ORDER BY submission_date DESC 
     LIMIT 5");
 
 // Get status distribution by category
 $category_stats = $conn->query("SELECT 
-    dd.primary_category, 
+    primary_category, 
     COUNT(*) as count 
-    FROM disability_details dd
-    GROUP BY dd.primary_category 
+    FROM applications
+    WHERE primary_category IS NOT NULL
+    GROUP BY primary_category 
     ORDER BY count DESC");
 ?>
 
@@ -79,6 +77,7 @@ $category_stats = $conn->query("SELECT
         <ul class="sidebar-menu">
             <li><a href="admin_dashboard.php">Dashboard</a></li>
             <li><a href="admin.php">Applications</a></li>
+            <li><a href="admin_profile.php">Manage Admins</a></li>
             <li><a href="admin_dashboard.php?logout=true" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">Logout</a></li>
         </ul>
     </aside>
@@ -142,7 +141,7 @@ $category_stats = $conn->query("SELECT
                         <td>#<?= $app['application_id'] ?></td>
                         <td><strong><?= htmlspecialchars($app['full_name']) ?></strong></td>
                         <td><?= htmlspecialchars($app['primary_category']) ?></td>
-                        <td><span class="status-badge status-<?= strtolower($app['status']) ?>"><?= $app['status'] ?></span></td>
+                        <td><span class="status-badge status-<?= strtolower($app['application_status']) ?>"><?= $app['application_status'] ?></span></td>
                         <td><?= date('d M Y', strtotime($app['submission_date'])) ?></td>
                     </tr>
                     <?php endwhile; ?>
@@ -186,6 +185,7 @@ $category_stats = $conn->query("SELECT
                 <a href="admin.php?filter_status=Pending" class="action-btn">⏳ Review Pending</a>
                 <a href="admin.php?filter_status=Approved" class="action-btn">✓ View Approved</a>
                 <a href="admin.php?filter_status=Rejected" class="action-btn">✕ View Rejected</a>
+                <a href="admin_profile.php" class="action-btn">⚙️ Manage Admins</a>
             </div>
         </div>
     </main>

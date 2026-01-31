@@ -131,6 +131,6 @@ body { display: flex; min-height: 100vh; background-color: var(--light-bg); }
     color: #444;
     line-height: 1.4;
     display: block;
-    max-width: 250px; /* Limits width so table doesn't stretch too far */
+    max-width: 250px;
     word-wrap: break-word;
 }

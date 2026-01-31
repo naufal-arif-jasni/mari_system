@@ -185,14 +185,14 @@
                 modalBody.innerText = content;
                 
                 modal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Stop scrolling
+                document.body.style.overflow = 'hidden';
             });
         });
 
         // Close modal function
         const closeModal = () => {
             modal.classList.remove('active');
-            document.body.style.overflow = ''; // Resume scrolling
+            document.body.style.overflow = '';
         };
 
         closeButtons.forEach(btn => btn.addEventListener('click', closeModal));

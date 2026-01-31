@@ -22,7 +22,6 @@ function toggleSidebar() {
 
 /**
  * Close Modal by ID
- * Generic function for closing any modal
  */
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);

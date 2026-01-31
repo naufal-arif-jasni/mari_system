@@ -1,5 +1,5 @@
 /* ============================================
-   9. index-styles.css
+   8. index-styles.css
    ============================================ */
 
 /* index-styles.css - Styles for index.php */
@@ -39,7 +39,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 2000; /* Higher than Bootstrap navbar */
+            z-index: 2000;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;

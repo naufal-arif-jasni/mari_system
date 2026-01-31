@@ -1,6 +1,5 @@
 /**
- * MARI SYSTEM - ADMIN APPLICATION MANAGEMENT (NEW DB STRUCTURE)
- * CRUD operations for normalized database structure
+ * MARI SYSTEM - ADMIN APPLICATION MANAGEMENT 
  */
 
 // Global variable to store applications data
@@ -16,7 +15,6 @@ function setApplicationsData(data) {
 
 /**
  * VIEW - View Complete Application Details
- * Fetches complete data from server via AJAX
  */
 function viewApplication(id) {
     console.log('viewApplication called with ID:', id);
@@ -227,6 +225,14 @@ function displayApplicationDetails(data) {
  * Generate File Preview
  */
 function generateFilePreview(doc) {
+    if (!doc || !doc.file_extension) {
+        console.warn('Missing file extension for document:', doc);
+        return `
+            <p>📄 ${doc ? doc.file_name : 'Document'}</p>
+            ${doc ? `<a href="${doc.file_path}" download class="download-btn">📥 Download</a>` : ''}
+        `;
+    }
+
     const ext = doc.file_extension.toLowerCase();
     const filepath = doc.file_path;
     
@@ -250,7 +256,6 @@ function generateFilePreview(doc) {
         `;
     }
 }
-
 /**
  * EDIT - Update Application Status
  */
@@ -355,7 +360,6 @@ function closeReportModal() {
 
 /**
  * Download Report as PDF
- * Uses browser's print function to save as PDF
  */
 function downloadReport() {
     console.log('Downloading report...');

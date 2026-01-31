@@ -12,18 +12,16 @@ $user_id = $_SESSION['user_id'];
 
 // Fetch application history
 include "db_conn.php";
-// NEW query must JOIN two tables
 $app_sql = "SELECT 
-                a.application_id,
-                a.application_number,
-                a.status,
-                a.submission_date,
-                dd.primary_category,
-                a.admin_remarks
-            FROM applications a
-            LEFT JOIN disability_details dd ON a.application_id = dd.application_id
-            WHERE a.user_id = '$user_id' 
-            ORDER BY a.submission_date DESC";
+                application_id,
+                application_number,
+                application_status,
+                submission_date,
+                primary_category,
+                admin_remarks
+            FROM applications
+            WHERE user_id = '$user_id' 
+            ORDER BY submission_date DESC";
 $app_result = mysqli_query($conn, $app_sql);
 ?>
 
@@ -88,8 +86,8 @@ $app_result = mysqli_query($conn, $app_sql);
                                 <td><?= htmlspecialchars($app['primary_category']) ?> Assistance</td>
                                 <td><?= date('d M Y, g:i A', strtotime($app['submission_date'])) ?></td>
                                 <td>
-                                    <span class="status-badge status-<?= strtolower($app['status']) ?>">
-                                        <?= $app['status'] ?>
+                                    <span class="status-badge status-<?= strtolower($app['application_status']) ?>">
+                                        <?= $app['application_status'] ?>
                                     </span>
                                 </td>
                                 <td>

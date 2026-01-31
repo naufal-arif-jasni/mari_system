@@ -26,92 +26,126 @@ if ($conn->connect_error) {
 if (isset($_GET['delete_id'])) {
     $id = intval($_GET['delete_id']);
     
-    // Delete all related records (CASCADE will handle this automatically)
-    // But we need to manually delete physical files
-    $file_query = $conn->query("SELECT file_path FROM documents WHERE application_id = $id");
-    while ($file_row = $file_query->fetch_assoc()) {
-        if (!empty($file_row['file_path']) && file_exists($file_row['file_path'])) {
-            unlink($file_row['file_path']);
+    // Start transaction
+    mysqli_begin_transaction($conn);
+    
+    try {
+        // Get document paths from applicant_details before deletion
+        $file_query = $conn->query("SELECT document_medical_report_path, document_specialist_form_path, 
+                                    document_oku_card_path, document_ic_copy_path, document_photo_path, document_other_path 
+                                    FROM applicant_details WHERE application_id = $id");
+        
+        if ($file_row = $file_query->fetch_assoc()) {
+            $doc_fields = ['document_medical_report_path', 'document_specialist_form_path', 
+                          'document_oku_card_path', 'document_ic_copy_path', 'document_photo_path', 'document_other_path'];
+            
+            foreach ($doc_fields as $field) {
+                if (!empty($file_row[$field]) && file_exists($file_row[$field])) {
+                    unlink($file_row[$field]);
+                }
+            }
         }
+        
+        // Delete from application_history (CASCADE will delete applicant_details and status records)
+        $conn->query("DELETE FROM application_history WHERE application_id = $id");
+        
+        // Log the deletion
+        $admin_user = $_SESSION['username'] ?? 'admin';
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $conn->query("INSERT INTO activity_log (application_id, activity_type, description, ip_address) 
+                      VALUES ($id, 'Delete', 'Application deleted by $admin_user', '$ip')");
+        
+        mysqli_commit($conn);
+        
+        echo "<script>alert('Application deleted successfully!'); window.location.href='admin.php';</script>";
+        exit();
+        
+    } catch (Exception $e) {
+        mysqli_rollback($conn);
+        echo "<script>alert('Error deleting application'); window.location.href='admin.php';</script>";
+        exit();
     }
-    
-    // Delete the application (CASCADE will delete all related records)
-    $conn->query("DELETE FROM applications WHERE application_id = $id");
-    
-    // Log the deletion
-    $admin_user = $_SESSION['username'] ?? 'admin';
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $conn->query("INSERT INTO activity_log (application_id, activity_type, description, ip_address) 
-                  VALUES ($id, 'Delete', 'Application deleted by $admin_user', '$ip')");
-    
-    echo "<script>alert('Application deleted successfully!'); window.location.href='admin.php';</script>";
-    exit();
 }
 
 // --- 4. LOGIC: UPDATE STATUS ---
 if (isset($_POST['update_btn'])) {
     $id = intval($_POST['app_id']);
-    $status = mysqli_real_escape_string($conn, $_POST['status']);
+    $new_status = mysqli_real_escape_string($conn, $_POST['status']);
     $remarks = mysqli_real_escape_string($conn, $_POST['admin_remarks']);
     $admin_user = $_SESSION['username'] ?? 'admin';
     
-    // Get old status for history
-    $old_status_query = $conn->query("SELECT status FROM applications WHERE application_id = $id");
-    $old_status_row = $old_status_query->fetch_assoc();
-    $old_status = $old_status_row['status'];
+    // Start transaction
+    mysqli_begin_transaction($conn);
     
-    // Update application status
-    $stmt = $conn->prepare("UPDATE applications SET status=?, admin_remarks=?, reviewed_by=?, reviewed_at=NOW() WHERE application_id=?");
-    $stmt->bind_param("sssi", $status, $remarks, $admin_user, $id);
-    $stmt->execute();
-    
-    // Insert into status history
-    $history_stmt = $conn->prepare("INSERT INTO status_history (application_id, old_status, new_status, changed_by, remarks) VALUES (?, ?, ?, ?, ?)");
-    $history_stmt->bind_param("issss", $id, $old_status, $status, $admin_user, $remarks);
-    $history_stmt->execute();
-    
-    // Log activity
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $log_stmt = $conn->prepare("INSERT INTO activity_log (application_id, activity_type, description, ip_address) VALUES (?, 'Update', ?, ?)");
-    $log_desc = "Status changed from $old_status to $status by $admin_user";
-    $log_stmt->bind_param("iss", $id, $log_desc, $ip);
-    $log_stmt->execute();
-    
-    echo "<script>alert('Application status updated successfully!'); window.location.href='admin.php';</script>";
-    exit();
+    try {
+        // Get old status from application_history
+        $old_status_query = $conn->query("SELECT status FROM application_history WHERE application_id = $id");
+        $old_status_row = $old_status_query->fetch_assoc();
+        $old_status = $old_status_row['status'];
+        
+        // Update application_history table
+        $stmt = $conn->prepare("UPDATE application_history 
+                                SET status=?, admin_remarks=?, reviewed_by=?, reviewed_at=NOW() 
+                                WHERE application_id=?");
+        $stmt->bind_param("sssi", $new_status, $remarks, $admin_user, $id);
+        $stmt->execute();
+        $stmt->close();
+        
+        // Insert into status table for history tracking
+        $history_stmt = $conn->prepare("INSERT INTO status (application_id, old_status, new_status, changed_by, remarks) 
+                                        VALUES (?, ?, ?, ?, ?)");
+        $history_stmt->bind_param("issss", $id, $old_status, $new_status, $admin_user, $remarks);
+        $history_stmt->execute();
+        $history_stmt->close();
+        
+        // Log activity
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $log_stmt = $conn->prepare("INSERT INTO activity_log (application_id, activity_type, description, ip_address) 
+                                     VALUES (?, 'Update', ?, ?)");
+        $log_desc = "Status changed from $old_status to $new_status by $admin_user";
+        $log_stmt->bind_param("iss", $id, $log_desc, $ip);
+        $log_stmt->execute();
+        $log_stmt->close();
+        
+        mysqli_commit($conn);
+        
+        echo "<script>alert('Application status updated successfully!'); window.location.href='admin.php';</script>";
+        exit();
+        
+    } catch (Exception $e) {
+        mysqli_rollback($conn);
+        echo "<script>alert('Error updating status'); window.location.href='admin.php';</script>";
+        exit();
+    }
 }
 
-// --- 5. DATA RETRIEVAL (Using JOIN to get data from multiple tables) ---
+// --- 5. DATA RETRIEVAL (Using VIEW for backward compatibility) ---
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
 $filter_status = isset($_GET['filter_status']) ? mysqli_real_escape_string($conn, $_GET['filter_status']) : '';
 
 $sql = "SELECT 
-    a.application_id,
-    a.application_number,
-    a.status,
-    a.submission_date,
-    a.admin_remarks,
-    ad.full_name,
-    ad.mykad,
-    ad.phone_number,
-    ad.email_address,
-    dd.primary_category,
-    dd.severity_level,
-    fi.employment_status,
-    (SELECT GROUP_CONCAT(document_type) FROM documents WHERE application_id = a.application_id) as documents
-FROM applications a
-LEFT JOIN applicant_details ad ON a.application_id = ad.application_id
-LEFT JOIN disability_details dd ON a.application_id = dd.application_id
-LEFT JOIN functional_impact fi ON a.application_id = fi.application_id
+    application_id,
+    application_number,
+    application_status,
+    submission_date,
+    admin_remarks,
+    full_name,
+    mykad,
+    phone_number,
+    email_address,
+    primary_category,
+    severity_level,
+    employment_status
+FROM applications
 WHERE 1=1";
 
 if (!empty($search)) { 
-    $sql .= " AND (ad.full_name LIKE '%$search%' OR a.application_number LIKE '%$search%' OR ad.mykad LIKE '%$search%')"; 
+    $sql .= " AND (full_name LIKE '%$search%' OR application_number LIKE '%$search%' OR mykad LIKE '%$search%')"; 
 }
 if (!empty($filter_status)) { 
-    $sql .= " AND a.status = '$filter_status'"; 
+    $sql .= " AND application_status = '$filter_status'"; 
 }
-$sql .= " ORDER BY a.submission_date DESC";
+$sql .= " ORDER BY submission_date DESC";
 
 $result = $conn->query($sql);
 $rows = [];
@@ -119,16 +153,14 @@ while($r = $result->fetch_assoc()) { $rows[] = $r; }
 
 // --- 6. GET REPORT DATA (for report generation) ---
 $report_sql = "SELECT 
-    a.application_id,
-    a.application_number,
-    a.status,
-    a.submission_date,
-    ad.full_name,
-    dd.primary_category
-FROM applications a
-LEFT JOIN applicant_details ad ON a.application_id = ad.application_id
-LEFT JOIN disability_details dd ON a.application_id = dd.application_id
-ORDER BY a.submission_date DESC";
+    application_id,
+    application_number,
+    application_status,
+    submission_date,
+    full_name,
+    primary_category
+FROM applications
+ORDER BY submission_date DESC";
 
 $report_result = $conn->query($report_sql);
 $report_data = [];
@@ -151,7 +183,7 @@ while($r = $report_result->fetch_assoc()) { $report_data[] = $r; }
     <nav class="navbar">
         <div class="nav-left">
             <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-            <a href="admin.php" class="logo"><img src="images/logo.png" alt="MARI Logo"></a>
+            <a href="admin_dashboard.php" class="logo"><img src="images/logo.png" alt="MARI Logo"></a>
         </div>
         <div class="nav-right">Admin Panel - <span>MARI System</span></div>
     </nav>
@@ -160,7 +192,8 @@ while($r = $report_result->fetch_assoc()) { $report_data[] = $r; }
         <ul class="sidebar-menu">
             <li><a href="admin_dashboard.php">Dashboard</a></li>
             <li><a href="admin.php">Applications</a></li>
-            <li><a href="admin.php?logout=true" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">Logout</a></li>
+            <li><a href="admin_profile.php">Manage Admins</a></li>
+            <li><a href="admin_dashboard.php?logout=true" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">Logout</a></li>
         </ul>
     </aside>
 
@@ -180,6 +213,7 @@ while($r = $report_result->fetch_assoc()) { $report_data[] = $r; }
                         <select name="filter_status">
                             <option value="">All Status</option>
                             <option value="Pending" <?= $filter_status == 'Pending' ? 'selected' : '' ?>>Pending</option>
+                            <option value="Under Review" <?= $filter_status == 'Under Review' ? 'selected' : '' ?>>Under Review</option>
                             <option value="Approved" <?= $filter_status == 'Approved' ? 'selected' : '' ?>>Approved</option>
                             <option value="Rejected" <?= $filter_status == 'Rejected' ? 'selected' : '' ?>>Rejected</option>
                         </select>
@@ -187,7 +221,6 @@ while($r = $report_result->fetch_assoc()) { $report_data[] = $r; }
                     <button type="submit" class="btn btn-view">Apply</button>
                     <a href="admin.php" class="btn btn-edit">Reset</a>
                     <button type="button" class="btn btn-report" onclick="openReportModal()">Generate Report</button>
-
                 </div>
             </form>
         </div>
@@ -199,7 +232,7 @@ while($r = $report_result->fetch_assoc()) { $report_data[] = $r; }
                 <div class="app-header">
                     <div class="app-id"><?= htmlspecialchars($row['application_number']) ?></div>
                     <div class="app-name"><?= htmlspecialchars($row['full_name']) ?></div>
-                    <div class="app-category"><?= htmlspecialchars($row['primary_category']) ?></div>
+                    <div class="app-category"><?= htmlspecialchars($row['primary_category'] ?? 'N/A') ?></div>
                 </div>
                 
                 <div class="app-body">
@@ -217,7 +250,7 @@ while($r = $report_result->fetch_assoc()) { $report_data[] = $r; }
                     </div>
                     <div class="info-row" style="border: none;">
                         <span class="info-label">Status</span>
-                        <span class="status-badge status-<?= strtolower(str_replace(' ', '-', $row['status'])) ?>"><?= $row['status'] ?></span>
+                        <span class="status-badge status-<?= strtolower(str_replace(' ', '-', $row['application_status'])) ?>"><?= $row['application_status'] ?></span>
                     </div>
                 </div>
                 
@@ -276,9 +309,9 @@ while($r = $report_result->fetch_assoc()) { $report_data[] = $r; }
                         <tr>
                             <td><?= htmlspecialchars($app['application_number']) ?></td>
                             <td><?= htmlspecialchars($app['full_name']) ?></td>
-                            <td><?= htmlspecialchars($app['primary_category']) ?></td>
+                            <td><?= htmlspecialchars($app['primary_category'] ?? 'N/A') ?></td>
                             <td><?= date('d M Y', strtotime($app['submission_date'])) ?></td>
-                            <td><span class="status-badge status-<?= strtolower($app['status']) ?>"><?= $app['status'] ?></span></td>
+                            <td><span class="status-badge status-<?= strtolower($app['application_status']) ?>"><?= $app['application_status'] ?></span></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -296,7 +329,6 @@ while($r = $report_result->fetch_assoc()) { $report_data[] = $r; }
     <!-- Scripts -->
     <script src="assets/js/common.js"></script>
     <script src="assets/js/admin-new.js"></script>
-    
     
     <!-- Pass PHP data to JavaScript -->
     <script>

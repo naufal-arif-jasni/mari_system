@@ -48,7 +48,6 @@ function toggleCaregiver() {
         section2.classList.remove('hidden');
     } else {
         section2.classList.add('hidden');
-        // Re-check age to be safe
         checkAge();
     }
 }
@@ -57,7 +56,6 @@ function toggleCaregiver() {
  * Initialize Application Form
  */
 function initializeApplicationForm() {
-    // Add DOB change listener
     const dobInput = document.getElementById('dob');
     if (dobInput) {
         dobInput.addEventListener('change', checkAge);

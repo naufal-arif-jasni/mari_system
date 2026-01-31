@@ -74,7 +74,7 @@
         if (isset($_POST['signup'])) {
             include "db_conn.php";
 
-            // Receive all inputs (address field removed)
+            // Receive all inputs
             $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
             $ic_number = mysqli_real_escape_string($conn, $_POST['ic_number']);
             $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -89,7 +89,6 @@
             if (mysqli_num_rows($check_result) > 0) {
                 echo "<div class='alert alert-warning mt-3'>Username already taken. Please choose another.</div>";
             } else {
-                // Insert into Database without address field
                 $sql = "INSERT INTO users (full_name, ic_number, email, phone_number, username, password) 
                         VALUES ('$full_name', '$ic_number', '$email', '$phone', '$username', '$password')";
                 

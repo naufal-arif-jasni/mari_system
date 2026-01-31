@@ -1,5 +1,5 @@
 /* ============================================
-   3. applicationform-styles.css
+   5. applicationform-styles.css
    ============================================ */
 
 /* applicationform-styles.css - Styles for application_form.php */
@@ -56,3 +56,9 @@ body { display: flex; min-height: 100vh; background-color: var(--light-bg); }
 .btn-primary { background-color: var(--primary-maroon) !important; border-color: var(--primary-maroon) !important; }
 .btn-primary:hover { background-color: var(--hover-maroon) !important; border-color: var(--hover-maroon) !important; }
 
+
+input[name="full_name"],
+input[name="residental_address"],
+input[name="oku_number"] {
+    text-transform: uppercase;
+}

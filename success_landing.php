@@ -23,7 +23,7 @@
             animation: drawCheck 0.8s ease-out 0.3s forwards;
         }
         body {
-            background-color: #fdf2f2; /* Very light maroon tint */
+            background-color: #fdf2f2;
         }
         .bg-maroon-900 { background-color: #4a0404; }
         .bg-maroon-800 { background-color: #600000; }
